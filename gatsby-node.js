@@ -161,6 +161,7 @@ exports.sourceNodes = async () => {
 
 exports.createPages = async ({ actions }) => {
   const { createPage } = actions;
+  const { toctree } = await stitchClient.callFunction('fetchDocument', [DB, METADATA_COLLECTION, { _id: ID_PREFIX }]);
 
   const { parentPaths, slugToTitle } = await stitchClient.callFunction('fetchDocument', [
     DB,
@@ -180,6 +181,7 @@ exports.createPages = async ({ actions }) => {
           path: pageUrl,
           component: path.resolve(`./src/templates/${template}.js`),
           context: {
+            toctree,
             snootyStitchId: SNOOTY_STITCH_ID,
             __refDocMapping: pageNodes,
             pageMetadata: PAGE_METADATA,
